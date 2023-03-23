@@ -28,6 +28,7 @@ const generateDescription = async ({
       }
     );
     const data = await response.json();
+    console.log(data);
     return data.choices[0].text;
   } catch (error) {
     console.error(error);
@@ -35,9 +36,15 @@ const generateDescription = async ({
 };
 
 //generateDescription function is used inside the NextJS API route handler
-export default async function handler(req, res) {
+// getGeneratedDescription is exported as the default handler for the api/returnProfessionalDescription
+// When a client makes an HTTP POST request to this route, the getGeneratedDescription function is executed
+
+// exports the getGeneratedDescription function as the default export of this module
+export default async function getGeneratedDescription(req, res) {
+  //extracts the relevant data from the req.body object through destructuring, which contains the data submitted in the POST request
   const { professionTitle, industry, keyWords, tone, numWords } = req.body;
 
+  // calls the generateDescription function with the extracted data as arguments/inputs params and generates a description based on the inputs and returns the generated text as a string and stored in the professionDescription variable
   const professionDescription = await generateDescription({
     professionTitle,
     industry,
@@ -46,5 +53,7 @@ export default async function handler(req, res) {
     numWords,
   });
 
+  //sends a response to the client in the form of a JSON object containing the generated profession description
+  //the status code of the response to 200 indicates the request was successful
   res.status(200).json({ professionDescription });
 }
