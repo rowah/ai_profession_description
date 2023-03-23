@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "next/font/google";
+import Dashboard from "ai-profession-description/components/Dashboard";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,6 +34,7 @@ export default function Home() {
             in Seconds
           </p>
         </div>
+        <Dashboard />
       </main>
     </>
   );
