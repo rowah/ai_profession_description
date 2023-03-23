@@ -12,11 +12,43 @@ export default function Dashboard() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
 
+  const handleSubmit = async (e) => {
+    //prevents the page from reloading when the form is submitted
+    e.preventDefault();
+    //updates the isGenerating state to true
+    setIsGenerating(true);
+    // sends a POST request to the NextJS API route /api/returnProfessionDescription with the user input values in the request's body
+    const res = await fetch("/api/returnProfessionDescription", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        professionTitle,
+        industry,
+        keyWords,
+        tone,
+        numWords,
+      }),
+    });
+    setIsGenerating(false);
+    // converts the response to a JSON format
+    const data = await res.json();
+    setProfessionDescription(data.professionDescription);
+  };
+
+  //handleCopy function to copy the jobDescription state to the clipboard
+  function handleCopy() {
+    navigator.clipboard.writeText(professionDescription);
+    setIsCopied(true);
+  }
+
   return (
     <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-zinc-500 rounded-lg">
       <div className="grid gap-y-12 md:grid-cols-2 md:gap-x-12 ">
         <div className="">
-          <form>
+          {/* update the form with the onSubmit event and pass the handleSubmit() function to it */}
+          <form onSubmit={(e) => handleSubmit(e)}>
             <div className="flex flex-col">
               <label className="sr-only" htmlFor="professionTitle">
                 Profession Title
@@ -131,7 +163,8 @@ export default function Dashboard() {
               className="block w-full rounded-md bg-white border border-gray-400 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-2 placeholder-gray-500 my-2 text-gray-900"
             />
             <button
-              onClick={() => {}}
+              // updates the button to call handleClick function when clicked
+              onClick={handleCopy}
               className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               type="submit"
               disabled={professionDescription === ""}
