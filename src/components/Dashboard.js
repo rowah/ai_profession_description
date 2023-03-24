@@ -151,7 +151,7 @@ export default function Dashboard() {
             <textarea
               rows={
                 professionDescription === ""
-                  ? 12
+                  ? 7
                   : professionDescription.split("\\n").length + 12
               }
               name="output"
