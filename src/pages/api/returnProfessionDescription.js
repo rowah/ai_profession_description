@@ -15,12 +15,12 @@ const generateDescription = async ({
           Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
-          prompt: `Describe the ${professionTitle} profession in ${
-            industry ? `the ${industry} industry` : ""
-          } in about ${numWords || 200} words in a ${tone || "neutral"} tone. ${
+          prompt: `Write a description about the ${professionTitle} profession in ${
+            industry ? `the ${industry} industry in` : ""
+          } about ${numWords || 200} words in a ${tone || "neutral"} tone. ${
             keyWords ? `Incorporate the following keywords: ${keyWords}` : ""
-          }. The description should be able to help someone wanting to choose a profession and should be in always that is SEO friendly, and highlight the salary range and the benefits. Can ${professionTitle} be taken over by AI and render the professionals jobless`,
-          max_tokens: 100,
+          }. The description should be able to help someone wanting to choose a profession with the salary range and the benefits highlighted, and then ${professionTitle} be taken over by AI thus rendering the professionals jobless`,
+          max_tokens: 400,
           temperature: 0.5,
         }),
       }
